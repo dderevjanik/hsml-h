@@ -1,0 +1,29 @@
+{
+  "name": "hsml-h",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dderevjanik/hsml-h.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "typescript": {
+    "main": "src/index.ts"
+  },
+
+  "bugs": {
+    "url": "https://github.com/dderevjanik/hsml-h/issues"
+  },
+  "homepage": "https://github.com/dderevjanik/hsml-h#readme",
+  "devDependencies": {
+    "prest-lib": "^1.1.3",
+    "typescript": "^3.2.4"
+  }
+}
