@@ -1,31 +1,34 @@
-import { Hsmls, Hsml, HsmlAttrOnData, HsmlAttrs } from "prest-lib/dist/hsml";
+import { Hsml, HsmlAttrs } from "prest-lib/dist/hsml";
 
-function h(tag: string, ...childs: Hsml[]): Hsml;
-function h(tag: string, attr: HsmlAttrs, ...childs: Hsml[]): Hsml;
-function h(tag: string, attr?: HsmlAttrs | Hsml, child?: Hsml): Hsml {
-    return {} as any;
+function isHsmlEl(item: any): item is Hsml {
+    return (typeof item === "string")
+        || (typeof item === "function")
+        || (typeof item === "object" && item["render"])
+        || Array.isArray(item)
+        ? true
+        : false;
 }
 
-const onlyTag = h("div#app");
-const tagWithText = h("p", "Lorem Ipsum");
-const tagWithSeveralText = h("p", "Lorem\n", "Ipsum\n");
-
-const tagWithHsml = h("div#app",
-    h("p", "paragrah"));
-const tagWith2Hsml = h("div#app",
-    h("p", "paragraph"),
-    h("p", "another paragraph"));
-const tagWithHsmlAndText = h("div#app",
-    "this is my app",
-    h("p", "paragraph"),
-    "footer text");
-
-const tagWithAttrs = h("div#app", { class: "app" });
-const tagWithAttrsText = h("div#app", { class: "app" }, "special");
-const tagWithAttrsHsml = h("div#app", { class: "app" },
-    h("p", "paragraph"));
-const tagWithAttrsTextHsml = h("div#app", { class: "app" },
-    "Header text",
-    h("p", "paragraph", h("b", "strong")),
-    "Footer text"
-);
+export function h(tag: string, ...childs: Hsml[]): Hsml;
+export function h(tag: string, attr: HsmlAttrs, ...childs: Hsml[]): Hsml;
+export function h(tag: string, attr?: HsmlAttrs | Hsml, ...child: Hsml[]): Hsml {
+    console.log(tag, attr, child);
+    if (attr) {
+        if (isHsmlEl(attr)) {
+            // attr = hsml obj
+            return [tag, (child && child.length)
+                    ? [attr, ...child]
+                    : attr] as any;
+        } else {
+            // attr = attributes
+            const result = [tag, attr] as any[];
+            if (child && child.length) {
+                result.push(child.length === 1 && (typeof child[0] === "string")
+                    ? child[0]
+                    : child);
+            }
+            return result as Hsml;
+        }
+    }
+    return [tag];
+}
