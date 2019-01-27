@@ -1,47 +1,28 @@
-import { h } from "./";
+import { h } from "../dist";
 import { Hsml } from "prest-lib/dist/hsml";
-
-/**
- * Utils
- */
-
-function prettify(hsml: any): string {
-    return JSON.stringify(hsml, null, 4)
-    .replace(/\[\s+"/mg, `["`)
-    .replace(/",\s+"(.*)"\s+]/mg, ', "$1"]')
-    .replace(/,\s+\[(\s+)\[/mg, ', [$1[');
-}
-
-function isEqual(txt: string, current: Hsml, expect: Hsml): void {
-    const equal = JSON.stringify(current) === JSON.stringify(expect);
-    if (!equal) {
-        console.error(txt);
-        console.log("current:", prettify(current));
-        console.log("expect :", prettify(expect));
-    }
-}
-
-/**
- * Tests
- */
+import { isEqual } from "./testutils";
 
 isEqual("Tag Only",
     h("div#app"),
     ["div#app"]
 );
+
 isEqual("HSML element with text",
     h("p", "Hello World"),
     ["p", "Hello World"]
 );
+
 isEqual("HSML element with two text child",
     h("p", "Lorem\n", "Ipsum\n"),
     ["p", ["Lorem\n", "Ipsum\n"]]
 );
+
 isEqual("Nested HSML element with text",
     h("div.app", h("p", "paragraph")),
     ["div.app", [
         ["p", "paragraph"]]]
 );
+
 isEqual("Two nested HSML elmeent with text",
     h("section.app",
         h("p", "paragraph"),
@@ -50,6 +31,7 @@ isEqual("Two nested HSML elmeent with text",
         ["p", "paragraph"],
         ["p", "another paragraph"]]]
 );
+
 isEqual("Nested Text and HSML element",
     h("div#app",
         "this is my app",
@@ -60,28 +42,33 @@ isEqual("Nested Text and HSML element",
         ["p", "paragraph"],
         "footer text"]]
 );
+
 isEqual("Attributes",
     h("div#app", { class: "app" }),
     ["div#app", { class: "app" }]
 );
+
 isEqual("Attributes with text",
     h("div#app", { class: "app" },
         "special"),
     ["div#app", { class: "app"},
         "special"]
 );
+
 isEqual("Nested HSML with attributes and text",
     h("span",
         h("a", { href: "#" }, "textnoed")),
     ["span", [
         ["a", { href: "#" }, "textnoed"]]]
 );
+
 isEqual("Nested HSML with only text",
     h("div#app", { class: "app" },
         h("p", "paragraph")),
     ["div#app", { class: "app" }, [
         ["p", "paragraph"]]]
 );
+
 isEqual("Complex scenario",
     h("div#app", { class: "app" },
         "Header text",
@@ -97,6 +84,7 @@ isEqual("Complex scenario",
 );
 const todo = (text: string): Hsml => h("li",
     h("a", { href: "#" }, text));
+
 isEqual("Todo App",
     h("div#todo-app",
         h("h2", "Todo App"),

@@ -16,7 +16,7 @@ function isHsmlEl(item: any): item is Hsml {
 }
 
 export function h(tag: string, ...childs: Hsml[]): Hsml;
-export function h(tag: string, attr: HsmlAttrs, ...childs: Hsml[]): Hsml;
+export function h(tag: string, attr?: HsmlAttrs, ...childs: Hsml[]): Hsml;
 export function h(tag: string, attr?: HsmlAttrs | Hsml, ...child: Hsml[]): Hsml {
     if (attr) {
         const hasChild = child && child.length;
